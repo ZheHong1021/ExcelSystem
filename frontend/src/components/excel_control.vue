@@ -3,6 +3,21 @@
         <div class="container mt-5">
             <div class="row justify-content-center">
                 <div class="col-5">
+                    <label for="select_label" class="form-label py-3">工作表選擇</label>
+                    <select class="form-select" v-model="sheet" id="select_label" aria-label="Default select example">
+                        <option value="1-1" selected>1-1</option>
+                        <option value="1-2">1-2</option>
+                        <option value="1-3">1-3</option>
+                        <option value="1-4">1-4</option>
+                    </select>
+                </div>
+                <div class="col-5">
+                    <label for="date_select" class="form-label py-3">日期選擇</label>
+                    <input class="form-control" id="date_select" type="date" v-model="excel_date" placeholder="完成量" aria-label="default input example">
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-5">
                     <label for="question_one" class="form-label py-3">點井施作</label>
                     <input class="form-control" id="question_one_value" type="text" v-model="question_one_value" placeholder="完成量" aria-label="default input example">
                 </div>
@@ -25,7 +40,6 @@
                     <center><button type="button" class="check py-3 px-5 btn-block" v-on:click="post_excel">確認</button></center>
                 </div>        
             </div>
-            <a href="./E向陽多元-S01-2021.11.05 (養殖)-h.xlsx" download>下載</a>
         </div>
     </header>
 </template>
@@ -42,7 +56,8 @@ export default {
             question_one_percent:null,
             question_two_value:null,
             question_two_percent:null,
-            case:[]
+            excel_date:'',
+            sheet:'1-1',
         }
     },
     created:function(){  // 網頁載入時，一開始就載入
@@ -55,6 +70,8 @@ export default {
             formData.append('question_one_percent',this.question_one_percent)
             formData.append('question_two_value',this.question_two_value)
             formData.append('question_two_percent',this.question_two_percent)
+            formData.append('sheet',this.sheet)
+            formData.append('excel_date',this.excel_date)
 
             axios({
                     method: 'post',

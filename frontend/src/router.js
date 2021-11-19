@@ -2,6 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import home from './components/homepage.vue';
 import control from './components/excel_control.vue';
+import file from './components/file_download.vue';
 
 
 Vue.use(VueRouter);
@@ -17,6 +18,13 @@ const routes = [{
     path: '/ExcelControl',
     name: 'control',
     component: control,
+    meta: {
+        auth: undefined
+    }
+},{
+    path: '/FileDownload',
+    name: 'file',
+    component: file,
     meta: {
         auth: undefined
     }
