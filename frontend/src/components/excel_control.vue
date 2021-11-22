@@ -74,15 +74,16 @@ export default {
             formData.append('excel_date',this.excel_date)
 
             axios({
-                    method: 'post',
-                    url: '/api/excel_write/',
-                    xstfCookieName: 'csrftoken',
-                    xsrfHeaderName: 'X-CSRFToken',
-                    data: formData,
-                    headers: {
-                        'X-CSRFToken': 'csrftoken',
-                    }
-                }).then(response => console.log(response));
+                method: 'post',
+                url: '/api/excel_write/ ',
+                xstfCookieName: 'csrftoken',
+                xsrfHeaderName: 'X-CSRFToken',
+                data: formData,
+                headers: {
+                    'X-CSRFToken': 'csrftoken',
+                }
+            }).then(response => console.log(response));
+            window.alert('輸入成功')
         }
     }
 }

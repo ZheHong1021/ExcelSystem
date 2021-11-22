@@ -2,6 +2,7 @@ module.exports = {
     // 關閉語法檢查
     // lintOnSave: false,
     devServer: {
+      disableHostCheck: true,
       proxy: {
         '/api': {
           target: 'http://localhost:8000/',
