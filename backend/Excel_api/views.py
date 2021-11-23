@@ -9,8 +9,11 @@ import datetime
 # Create your views here.
 
 class ControlExcel(View):
-    # def get(self, request):
-    #      return JsonResponse({'msg': 'ok'})
+    def get(self, request):
+        read_excel = xlrd.open_workbook('../frontend/public/excel_folder/E向陽多元-S01-2021.11.05 (養殖)-h.xlsx')
+        table = read_excel.sheet_by_name('1-1')
+        return JsonResponse({'msg': 'ok'})
+
     def post(self, request):
         pythoncom.CoInitialize()
         book = request.POST
