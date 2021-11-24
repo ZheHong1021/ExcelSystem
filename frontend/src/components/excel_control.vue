@@ -4,20 +4,17 @@
             <div class="row justify-content-center">
                 <div class="col-4">
                     <label for="date_select" class="form-label py-3">日期選擇</label>
-                    <input class="form-control" id="date_select" type="date" v-model="excel_date" placeholder="完成量" aria-label="default input example">
+                    <input class="form-control" id="date_select" type="date" v-model="excel_date" placeholder="完成量">
                 </div>
                 <div class="col-4">
                     <label for="select_label" class="form-label py-3">迴路選擇</label>
-                    <select class="form-select" v-model="select_file" id="select_label" aria-label="Default select example">
-                        <option value="1-1" selected>1-1</option>
-                        <option value="1-2">1-2</option>
-                        <option value="1-3">1-3</option>
-                        <option value="1-4">1-4</option>
+                    <select class="form-select" v-model="select_file" id="select_label">
+                        <option v-for="(xlsx, index) in xlsx_name" :key="index" :vlaue="xlsx" v-on:change="get_excel">{{ xlsx }}</option>
                     </select>
                 </div>
                 <div class="col-4">
                     <label for="select_label" class="form-label py-3">廠區選擇</label>
-                    <select class="form-select" v-model="select_sheet" id="select_label" aria-label="Default select example">
+                    <select class="form-select" v-model="select_sheet" id="select_label">
                         <option value="1-1" selected>1-1</option>
                         <option value="1-2">1-2</option>
                         <option value="1-3">1-3</option>
@@ -31,19 +28,19 @@
                 </div>
                 <div class="col-2">
                     <label for="question_one" class="form-label py-3">權重比(%)</label>
-                    <input class="form-control" id="question_one_value" type="text" v-model="question_one_value" placeholder="完成量" aria-label="default input example" readonly>
+                    <input class="form-control" id="question_one_value" type="text" placeholder="完成量" aria-label="default input example" readonly>
                 </div>
                 <div class="col-2">
                     <label for="question_one" class="form-label py-3">總量</label>
-                    <input class="form-control" id="question_one_value" type="text" v-model="question_one_value" placeholder="完成量" aria-label="default input example" readonly>
+                    <input class="form-control" id="question_one_value" type="text" placeholder="完成量" aria-label="default input example" readonly>
                 </div>
                 <div class="col-2">
                     <label for="question_one" class="form-label py-3">完工量</label>
-                    <input class="form-control" id="question_one_value" type="text" v-model="question_one_value" placeholder="完成量" aria-label="default input example">
+                    <input class="form-control" id="question_one_value" type="text" placeholder="完成量" aria-label="default input example">
                 </div>  
                 <div class="col-2">
                     <label for="question_one" class="form-label py-3">完工率(%)</label>
-                    <input class="form-control" id="question_one_value" type="text" v-model="question_one_value" placeholder="完成量" aria-label="default input example" readonly>
+                    <input class="form-control" id="question_one_value" type="text" placeholder="完成量" aria-label="default input example" readonly>
                 </div>     
             </div>
         </div>
@@ -60,23 +57,39 @@ export default {
         return{
             data_json: new FormData(),
             excel_date:'',
-            select_file:'1-1',
-            select_sheet:'1-1',
+            select_file:'',
+            select_sheet:'',
+            xlsx_name:"",
+            abc:''
         }
     },
     created:function(){  // 網頁載入時，一開始就載入
-        this.get_excel()
+        this.excel_info()
     },
     methods:{
-        get_excel:async function() {
+        excel_info:async function() {
             axios.get('/api/excel_read/').then(
                 response => {
-                    this.abc = response.data
+                    this.xlsx_name = response.data
                 },
                 error => {
                     alert(error)
                 }
             )
+        },
+        get_excel:async function() {
+            let formData = new FormData()
+            formData.append('select_file',this.select_file)
+            axios({
+                method: 'post',
+                url: '/api/excel_read/ ',
+                xstfCookieName: 'csrftoken',
+                xsrfHeaderName: 'X-CSRFToken',
+                data: formData,
+                headers: {
+                    'X-CSRFToken': 'csrftoken',
+                }
+            }).then(response => console.log(response));
         },
         post_excel:async function() {
             // let formData = new FormData()
@@ -98,7 +111,7 @@ export default {
             //     }
             // }).then(response => console.log(response));
             window.alert('輸入成功')
-        }
+        },
     }
 }
 </script>

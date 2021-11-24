@@ -5,33 +5,45 @@ import xlwings as xw
 import xlrd
 import pythoncom
 import datetime
+import os
 
 # Create your views here.
 
 class ControlExcel(View):
-    def get(self, request):
-        read_excel = xlrd.open_workbook('../frontend/public/excel_folder/E向陽多元-S01-2021.11.05 (養殖)-h.xlsx')
-        table = read_excel.sheet_by_name('1-1')
-        return JsonResponse({'msg': 'ok'})
-
     def post(self, request):
         pythoncom.CoInitialize()
         book = request.POST
-        dict = {'F,G':5,'H,I':7,'J,K':9,'L,M':11,'N,O':13,'P,Q':15,'R,S':17,'T,U':19}
+        dict = {'E':5,'G':7,'I':9,'K':11,'M':13,'O':15,'Q':17}
 
-        read_excel = xlrd.open_workbook('../frontend/public/excel_folder/E向陽多元-S01-2021.11.05 (養殖)-h.xlsx')
+        read_excel = xlrd.open_workbook('../frontend/public/excel_folder/S01.xlsx')
         table = read_excel.sheet_by_name('1-1')
         write_excel = xw.App(visible=True,add_book=False)
-        wb = write_excel.books.open('../frontend/public/excel_folder/E向陽多元-S01-2021.11.05 (養殖)-h.xlsx')
+        wb = write_excel.books.open('../frontend/public/excel_folder/S01.xlsx')
 
         for i in dict:
             if xlrd.xldate.xldate_as_datetime(table.cell_value(4, dict[i]),0) == datetime.datetime.strptime(book['excel_date'],"%Y-%m-%d"):
                 print(xlrd.xldate.xldate_as_datetime(table.cell_value(4, dict[i]),0))
                 wb.sheets[book['sheet']].range(i.split(',')[0]+'7').value = book['question_one_value']
-                wb.sheets[book['sheet']].range(i.split(',')[1]+'7').value = book['question_one_percent']
                 wb.save()
                 break
         wb.close()
         write_excel.quit()
         return JsonResponse(book, safe=False)
 
+class GetExcel(View):
+    def get(self, request):
+        self.all_xlsx = list()
+        self.xlsx_file = os.listdir('../frontend/public/excel_folder')
+        for xlsx in self.xlsx_file:
+            self.all_xlsx.append(os.path.splitext(xlsx)[0])
+        return JsonResponse(self.all_xlsx, safe=False)
+    def post(self, request):
+        self.all_sheet = list()
+        pythoncom.CoInitialize()
+        self.excel_info = request.POST
+        self.read_excel = xlrd.open_workbook('../frontend/public/excel_folder/'+excel_info['select_file']+'.xlsx')
+        for sheet in self.read_excel.sheets():
+            self.all_sheet.append(sheet.name)
+        print(self.all_sheet)
+        return JsonResponse(self.all_xlsx, safe=False)
+        
