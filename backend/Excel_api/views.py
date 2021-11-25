@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views import View
-from django.http import JsonResponse
+from django.http import JsonResponse,HttpResponse
 import xlwings as xw
 import xlrd
 import pythoncom
@@ -32,18 +32,27 @@ class ControlExcel(View):
 
 class GetExcel(View):
     def get(self, request):
-        self.all_xlsx = list()
+        self.all_xlsx = dict()
         self.xlsx_file = os.listdir('../frontend/public/excel_folder')
+
         for xlsx in self.xlsx_file:
-            self.all_xlsx.append(os.path.splitext(xlsx)[0])
+            self.all_sheet = list()
+            self.excel_info = dict()
+            self.read_excel = xlrd.open_workbook('../frontend/public/excel_folder/'+os.path.splitext(xlsx)[0]+'.xlsx')
+            for sheet in self.read_excel.sheets():
+                self.all_sheet.append(sheet.name)
+            self.sheet_info = self.read_excel.sheet_by_name(self.all_sheet[0])
+            for i in [5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,24,25,26]:
+                print(self.sheet_info.cell_value(i, 3))
+                self.excel_info[self.sheet_info.cell_value(i, 2)] = [self.sheet_info.cell_value(i, 1),self.sheet_info.cell_value(i, 3)]
+
+            self.all_xlsx[os.path.splitext(xlsx)[0]] = [self.all_sheet,self.excel_info,0]
+
         return JsonResponse(self.all_xlsx, safe=False)
+
     def post(self, request):
-        self.all_sheet = list()
         pythoncom.CoInitialize()
-        self.excel_info = request.POST
-        self.read_excel = xlrd.open_workbook('../frontend/public/excel_folder/'+excel_info['select_file']+'.xlsx')
-        for sheet in self.read_excel.sheets():
-            self.all_sheet.append(sheet.name)
-        print(self.all_sheet)
-        return JsonResponse(self.all_xlsx, safe=False)
-        
+        excel_info = request.POST
+        read_excel = xlrd.open_workbook('../frontend/public/excel_folder/S01.xlsx')
+        table = read_excel.sheet_by_name(excel_info['select_sheet'])
+        return JsonResponse(excel_info, safe=False)
