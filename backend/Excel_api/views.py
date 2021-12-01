@@ -13,22 +13,25 @@ class ControlExcel(View):
     def post(self, request):
         pythoncom.CoInitialize()
         book = request.POST
+        self.date_item = {'E':4,'G':6,'I':8,'K':10,'M':12,'O':14,'Q':16}
+        self.item_name = dict()
         print(book)
-        dict = {'E':5,'G':7,'I':9,'K':11,'M':13,'O':15,'Q':17}
-
         read_excel = xlrd.open_workbook('../frontend/public/excel_folder/'+book['select_loop']+'.xlsx')
         table = read_excel.sheet_by_name(book['select_plant'])
+        for i in [5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,24,25,26]:
+            self.item_name[table.cell_value(i, 2)] = i
+
         write_excel = xw.App(visible=True,add_book=False)
         wb = write_excel.books.open('../frontend/public/excel_folder/'+book['select_loop']+'.xlsx')
-        print(xlrd.xldate.xldate_as_datetime(table.cell_value(3, 4),0),datetime.datetime.strptime(book['select_date'],"%Y-%m-%d"))
-        # for i in dict:
-        if xlrd.xldate.xldate_as_datetime(table.cell_value(3, 4),0) == datetime.datetime.strptime(book['select_date'],"%Y-%m-%d"):
-            print('hi')
-            # wb.sheets[book['sheet']].range(i.split(',')[0]+'7').value = book['question_one_value']
-            # wb.save()
-            # break
-        # wb.close()
-        # write_excel.quit()
+
+        for i in self.date_item:
+            if xlrd.xldate.xldate_as_datetime(table.cell_value(3, self.date_item[i]),0) == datetime.datetime.strptime(book['select_date'],"%Y-%m-%d"):
+                for item in self.item_name:
+                    wb.sheets[book['select_plant']].range(i+str(self.item_name[item]+1)).value = book[item].split(',')[0]
+                wb.save()
+                break
+            wb.close()
+            write_excel.quit()
         return JsonResponse(book, safe=False)
 
 class GetExcel(View):

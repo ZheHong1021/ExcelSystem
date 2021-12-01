@@ -93,7 +93,7 @@ export default {
             formData.append('select_loop',this.select_file)
             formData.append('select_plant',this.select_sheet)
             for (var i in this.project_info) {
-                formData.append(i,[this.project_info[i][2],Number(this.project_info[i][2])/Number(this.project_info[i][1])*100])
+                formData.append(i,[Number(this.project_info[i][2]),Number(this.project_info[i][2])/Number(this.project_info[i][1])*100])
             }
             console.log(formData)
             axios({ 
