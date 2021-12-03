@@ -6,8 +6,6 @@
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ms-auto my-2 my-lg-0">
                     <li class="nav-item"><router-link class="nav-link" to="/ExcelControl">填寫工作日報</router-link></li>
-                    <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#portfolio">Portfolio</a></li>
                     <li class="nav-item"><router-link class="nav-link" to="/FileDownload">檔案下載區</router-link></li>
                 </ul>
             </div>

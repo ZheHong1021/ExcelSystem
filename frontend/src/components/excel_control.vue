@@ -77,7 +77,7 @@ export default {
     },
     methods:{
         excel_info:async function() { //取得excel相關資訊(權重、項目名稱等..)
-            axios.get('/api/excel_read/').then(
+            axios.get('/api/excel_write/').then(
                 response => {
                     this.xlsx_name = response.data
                 },
