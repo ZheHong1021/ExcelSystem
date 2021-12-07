@@ -64,39 +64,39 @@ axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 export default {
     data(){
         return{
-            excel_date:'',
-            select_file:'',
-            select_sheet:'',
-            xlsx_name:'',
-            sheet_info:[],
-            project_info:[],
+            excel_date:'', //紀錄輸入的日期
+            select_file:'', //紀錄選擇的迴路
+            select_sheet:'', //紀錄選擇的工作表
+            xlsx_name:'', //接受後端GET到的資料(關於所有EXCEL資訊)
+            sheet_info:[], //紀錄所有SHEET
+            project_info:[], //記錄當下SHEET的EXCEL資料
         }
     },
     created:function(){  // 網頁載入時，一開始就載入
-        this.excel_info()
+        this.excel_info() 
     },
     methods:{
         excel_info:async function() { //取得excel相關資訊(權重、項目名稱等..)
             axios.get('/api/excel_write/').then(
                 response => {
-                    this.xlsx_name = response.data
+                    this.xlsx_name = response.data //接收回傳的資訊
                 },
                 error => {
-                    alert(error)
+                    alert(error) //沒接收到 印出ERROR
                 }
             )
         },
 
         post_excel:async function() {  //將使用者填表單資料送到後端
             let formData = new FormData;
-            formData.append('select_date',this.excel_date)
-            formData.append('select_loop',this.select_file)
-            formData.append('select_plant',this.select_sheet)
-            for (var i in this.project_info) {
+            formData.append('select_date',this.excel_date) //紀錄日期
+            formData.append('select_loop',this.select_file) //紀錄迴路
+            formData.append('select_plant',this.select_sheet) //紀錄工作表
+            for (var i in this.project_info) { //{ 項目名稱：[完成量,完成率] }
                 formData.append(i,[Number(this.project_info[i][2]),Number(this.project_info[i][2])/Number(this.project_info[i][1])*100])
             }
             console.log(formData)
-            axios({ 
+            axios({  //發送POST請求給後端
                 method: 'post',
                 url: '/api/excel_write/ ',
                 xstfCookieName: 'csrftoken',
