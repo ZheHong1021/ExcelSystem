@@ -6,6 +6,8 @@ import xlrd
 import pythoncom
 import datetime
 import os
+from xlutils.copy import copy
+import openpyxl  
 
 # Create your views here.
 
@@ -23,6 +25,9 @@ class ControlExcel(View):
 
         self.write_excel = xw.App(visible=True,add_book=False)
         self.wb = self.write_excel.books.open('../frontend/public/excel_folder/'+self.excel_total['select_loop']+'.xlsx') #開啟準備寫入的excel
+        if datetime.datetime.strptime(self.excel_total['select_date'],"%Y-%m-%d").weekday() == 6:
+            b = openpyxl.load_workbook('../frontend/public/excel_folder/'+self.excel_total['select_loop']+'.xlsx')  
+            b.save("../frontend/public/excel_folder/new_test.xlsx")
 
         for i in self.date_item: #迭代date_item 判斷前端選擇的是哪個時間
             #xlrd.xldate.xldate_as_datetime(self.table.cell_value(3, self.date_item[i]),0) => 讀取excel內的時間
