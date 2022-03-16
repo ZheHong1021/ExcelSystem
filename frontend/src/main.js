@@ -5,8 +5,11 @@ import router from './router';
 import 'vuetify/dist/vuetify.min.css'
 import axios from 'axios'
 
+Vue.config.devtools=true;
+
 Vue.prototype.$axios = axios
 Vue.config.productionTip = false
+
 Vue.use(Vuetify)
 
 new Vue({

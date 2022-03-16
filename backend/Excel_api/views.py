@@ -22,6 +22,7 @@ class ControlExcel(View):
         self.table = self.read_excel.sheet_by_name(self.excel_total['select_plant']) #根據前端所選的sheet來讀取
         for i in [5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,24,25,26]: #取出excel各個工程項目
             self.item_name[self.table.cell_value(i, 2)] = i
+        print(self.item_name)
 
         self.write_excel = xw.App(visible=True,add_book=False)
         self.wb = self.write_excel.books.open('../frontend/public/excel_folder/'+self.excel_total['select_loop']+'.xlsx') #開啟準備寫入的excel
@@ -40,6 +41,7 @@ class ControlExcel(View):
         self.wb.close() #關閉檔案
         self.write_excel.quit() #關閉excel app
         return JsonResponse(self.excel_total, safe=False)
+
 
     def get(self, request):
         self.all_xlsx = dict() #{ 迴路名稱：[所有sheet,excel_info,準備儲存前端輸入的完成量] }

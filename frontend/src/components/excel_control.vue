@@ -106,8 +106,24 @@ export default {
                 headers: {
                     'X-CSRFToken': 'csrftoken',
                 }
-            }).then(response => console.log(response));
-            window.alert('輸入成功')
+            }).then(response => {
+                console.log(response)
+                window.alert('輸入成功')
+            }).catch(err =>{
+                console.log(err);
+            });
+            // axios({  //發送POST請求給後端
+            //     method: 'post',
+            //     url: '/api/excel_write/ ',
+            //     xstfCookieName: 'csrftoken',
+            //     xsrfHeaderName: 'X-CSRFToken',
+            //     data: formData,
+            //     responseType: 'json',
+            //     headers: {
+            //         'X-CSRFToken': 'csrftoken',
+            //     }
+            // }).then(response => console.log(response));
+            // window.alert('輸入成功')
         },
 
     },
