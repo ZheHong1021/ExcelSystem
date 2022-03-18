@@ -4,6 +4,7 @@ import Vuetify from 'vuetify'
 import router from './router';
 import 'vuetify/dist/vuetify.min.css'
 import axios from 'axios'
+import store from './store'
 
 Vue.config.devtools=true;
 
@@ -16,8 +17,11 @@ new Vue({
   vuetify: new Vuetify(),
   router,
   axios,
-  render: h => h(App),
+  store,
+  render: h => h(App)
 }).$mount('#app')
+
+
 new Vuetify({
   icons: {
       iconfont: 'md', // 'mdi' || 'mdiSvg' || 'md' || 'fa' || 'fa4' || 'faSvg'

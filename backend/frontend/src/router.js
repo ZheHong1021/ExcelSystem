@@ -1,8 +1,8 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import home from './components/homepage.vue';
-import control from './components/excel_control.vue';
-import file from './components/file_download.vue';
+import home from './views/homepage.vue';
+import control from './views/excel_control.vue';
+import file from './views/file_download.vue';
 
 
 Vue.use(VueRouter);

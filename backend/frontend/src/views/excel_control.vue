@@ -1,5 +1,6 @@
 <template>
     <header class="masthead">
+        
         <div class="container mt-5">
             <div class="row justify-content-center">
                 <div class="col-4">
@@ -62,6 +63,7 @@ import axios from 'axios';
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 export default {
+    name: "excel_control",
     data(){
         return{
             excel_date:'', //紀錄輸入的日期
@@ -86,7 +88,6 @@ export default {
                 }
             )
         },
-
         post_excel:async function() {  //將使用者填表單資料送到後端
             let formData = new FormData;
             formData.append('select_date',this.excel_date) //紀錄日期

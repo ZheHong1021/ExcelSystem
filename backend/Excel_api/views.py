@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views import View
-from django.http import JsonResponse,HttpResponse
+from django.http import  JsonResponse,HttpResponse, StreamingHttpResponse
 import xlwings as xw
 import xlrd
 import pythoncom
@@ -13,7 +13,6 @@ from datetime import datetime
 from ExcelSystem.settings import BASE_DIR  
 
 # Create your views here.
-
 class ControlExcel(View):
     def post(self, request):
         pythoncom.CoInitialize() #防止pythoncom錯誤跑出
@@ -73,4 +72,51 @@ class ControlExcel(View):
             self.all_xlsx[os.path.splitext(xlsx)[0]] = [self.all_sheet,self.excel_info,0] #儲存進dict
 
         return JsonResponse(self.all_xlsx, safe=False)
+
+
+def file_iterator(file_path, chunk_size=512):
+    """
+    文件生成器,防止文件過大，導致內存溢出
+    :param file_path: 文件絕對路徑
+    :param chunk_size: 塊大小
+    :return: 生成器
+    """
+    with open(file_path, mode='rb') as f:
+        while True:
+            c = f.read(chunk_size)
+            if c:
+                yield c
+            else:
+                break
+
+# Download Excel File
+class DownloadReportView(View):
+    def get(self, request):
+        folder = request.GET.get('folder') # 得到欲抓取檔案的資料夾
+        filename = request.GET.get('filename') # 得到欲下載的檔案名稱
+        file_path = os.path.join(BASE_DIR, 'Excel_api', 'resources', folder, filename)
+        try:
+            response = StreamingHttpResponse(file_iterator(file_path))
+            response['Content-Type'] = 'application/vnd.ms-excel'
+            response['Content-Disposition'] = 'attachment;filename="{}"'.format(filename)
+            return response
+        except:
+            return HttpResponse("Sorry but Not Found the File")
     
+    def folderList(self):
+        file_path = os.path.join(BASE_DIR, 'Excel_api', 'resources') # Excel檔案的位置
+        files = os.listdir(file_path)
+        dict = {}
+        for file in files:
+            absolute_path = file_path + "\\" + file # 絕對路徑(用來判斷檔案是不是資料夾)
+            # 只抓取資料夾
+            if(os.path.isdir(absolute_path)):
+                children_file = os.listdir(absolute_path) # 子資料夾下的所有檔案
+                dict[file] = children_file
+        
+        return JsonResponse(dict)
+
+
+
+
+
