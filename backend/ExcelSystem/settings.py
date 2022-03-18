@@ -63,8 +63,8 @@ ROOT_URLCONF = 'ExcelSystem.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        # 'DIRS': [os.path.join(BASE_DIR, 'frontend/dist')], # 讀取 VueJS build後所生成的 dist檔
+        # 'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'frontend/dist')], # 讀取 VueJS build後所生成的 dist檔
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -129,7 +129,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 # Add for vuejs 
-# STATICFILES_DIRS = [ os.path.join(BASE_DIR, "frontend/dist/static"), ]
+STATICFILES_DIRS = [ os.path.join(BASE_DIR, "frontend/dist/static"), ]
 
 django_heroku.settings(locals())
 

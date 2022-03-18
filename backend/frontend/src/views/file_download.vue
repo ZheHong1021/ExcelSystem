@@ -1,5 +1,5 @@
 <template>
-    <header class="masthead">
+    <header class="masthead" style="min-height: 100vh;">
         <div class="container mt-5">
             <div class="row justify-content-center">
                 <div class="accordion accordion-flush" id="accordionFlushExample">

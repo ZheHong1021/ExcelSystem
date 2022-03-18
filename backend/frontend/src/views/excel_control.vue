@@ -58,7 +58,6 @@
 </template>
 
 <script>
-//import * as Excel from '../services/input_excel.js';
 import axios from 'axios';
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
