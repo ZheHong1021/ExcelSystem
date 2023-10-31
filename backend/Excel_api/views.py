@@ -20,7 +20,8 @@ class ControlExcel(View):
         self.date_item = {'E':4,'G':6,'I':8,'K':10,'M':12,'O':14,'Q':16} #為了方便取得excel日期所制定的dict
         self.item_name = dict() #{ 項目名稱：項目所在的行數 }
 
-        folder = os.path.join(BASE_DIR, "frontend/public/excel_folder/")
+        # folder = os.path.join(BASE_DIR, "frontend/public/excel_folder/")
+        folder = os.path.join(BASE_DIR, "Excel_api", "resources")
         self.read_excel = xlrd.open_workbook(folder + self.excel_total['select_loop'] + '.xlsx') #根據前端選擇的迴路讀檔
         self.table = self.read_excel.sheet_by_name(self.excel_total['select_plant']) #根據前端所選的sheet來讀取
         for i in [5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,24,25,26]: # 取出excel各個工程項目(數字為第n列)
@@ -56,10 +57,12 @@ class ControlExcel(View):
 
     def get(self, request):
         self.all_xlsx = dict() #{ 迴路名稱：[所有sheet,excel_info,準備儲存前端輸入的完成量] }
-        folder = os.path.join(BASE_DIR, "frontend/public/excel_folder")
+        # folder = os.path.join(BASE_DIR, "frontend/public/excel_folder")
+        folder = os.path.join(BASE_DIR, "Excel_api", "resources")
         self.xlsx_file = os.listdir(folder)
 
         for xlsx in self.xlsx_file: #迭代xlsx_file
+            if os.path.isdir(xlsx): continue
             self.all_sheet = list() #記錄所有sheet
             self.excel_info = dict() # { 項目名稱：權重&完成量 }
             self.read_excel = xlrd.open_workbook(folder + '/' +os.path.splitext(xlsx)[0]+'.xlsx')  #根據迭代的迴路讀檔

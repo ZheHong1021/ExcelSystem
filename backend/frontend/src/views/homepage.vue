@@ -1,30 +1,27 @@
 <template>
-    <header class="masthead">
-        <div class="container px-4 px-lg-5 h-100">
-            <div class="row gx-4 gx-lg-5 h-100 align-items-center justify-content-center text-center">
-                <div class="col-lg-8 align-self-end">
-                    <h1 class="text-white font-weight-bold">Your Favorite Place for Free Bootstrap Themes</h1>
-                    <hr class="divider" />
-                </div>
-                <div class="col-lg-8 align-self-baseline">
-                    <p class="text-white-75 mb-5">Start Bootstrap can help you build better websites using the Bootstrap framework! Just download a theme and start customizing, no strings attached!</p>
-                    <router-link class="btn btn-primary btn-xl" to="/ExcelControl">Start</router-link>
-                </div>
-            </div>
-        </div>
-    </header>
+    <v-container 
+        class="d-flex align-center justify-center pa-4"
+        style="min-height: 80vh; width: 100%;">
+            <v-row class="text-center" >
+                <v-col cols="12">
+                    <h3 class="text-h3 font-weight-bold white--text">歡迎使用 Excel系統!</h3>
+                </v-col>
+
+                <v-col cols="12" class="mt-12">
+                    <h4 class="text-h4 font-weight-bold">
+                        <v-btn rounded color="success" dark x-large @click="$router.push('/ExcelControl')">
+                            <v-icon class="mr-2">start</v-icon>
+                            Start
+                        </v-btn>
+                    </h4>
+                </v-col>
+            </v-row>
+    </v-container>
 </template>
 
 <script>
 export default {
-    name: "Home"
-  
+    name: "home-page"
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-    header {
-        height: 100vh;
-    }
-</style>
